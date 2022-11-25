@@ -222,25 +222,7 @@ def plot_modal_values(data: pd.DataFrame):
                         'S1', 'S2', 'S3'])
 
 
-# %%
-# plot_data(df)
-print(df.info())
-df = clear_data(df)
-print(df.info())
-print_data_stats(df)
-# %%
-plot_data(df)
-plot_hist(df)
-box_plot(df)
-plot_mean_std(df)
-plot_modal_values(df)
-
-
-# %%
-df = clear_data(df)
-
-
-def a(data: pd.DataFrame):
+def linreg(data: pd.DataFrame):
     columns_titles = ['S1_TC1', 'S2_TC1', 'S3_TC1',
                       'S1_TC2', 'S2_TC2', 'S3_TC2']
     data = data.reindex(columns=columns_titles)
@@ -254,5 +236,17 @@ def a(data: pd.DataFrame):
                facet_kws=dict(sharex=False, sharey=False))
 
 
-a(df)
 # %%
+# plot_data(df)
+print(df.info())
+df = clear_data(df)
+print(df.info())
+print_data_stats(df)
+# %%
+plot_data(df)
+plot_hist(df)
+box_plot(df)
+plot_mean_std(df)
+plot_modal_values(df)
+# %%
+linreg(df)
