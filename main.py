@@ -177,7 +177,6 @@ def plot_mean_std(data: pd.DataFrame):
     ax.set_title('Mean and standard deviation')
     ylim = ax.get_ylim()
     xlim = ax.get_xlim()
-    d = 2.5
     ax.hlines((ylim[0]+ylim[1])/2, xmin=xlim[0],
               xmax=xlim[1],
               linestyles='solid', colors='black')
