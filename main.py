@@ -172,18 +172,24 @@ def plot_mean_std(data: pd.DataFrame):
     for item in range(len(means)):
         sns.pointplot(d1, linestyles='None', errorbar='sd',
                       errwidth=0.5, capsize=0.1, markers='.',
-                      scale=0.75, orient='v')
-    ax.set_ylabel(r'T [$^\circ$C]')
+                      scale=0.75, orient='h')
+    ax.set_xlabel(r'T [$^\circ$C]')
     ax.set_title('Mean and standard deviation')
     ylim = ax.get_ylim()
+    xlim = ax.get_xlim()
     d = 2.5
-    ax.vlines(d, ymin=ylim[0]-10, ymax=ylim[1]+10,
+    ax.hlines((ylim[0]+ylim[1])/2, xmin=xlim[0],
+              xmax=xlim[1],
               linestyles='solid', colors='black')
-    ax.set_ylim(ylim)
-    ax.text(2, ylim[1]-0.05, 'TC 1')
-    ax.text(d+0.1, ylim[1]-0.05, 'TC 2')
+    ax.set_xlim(xlim)
+    ax.text(xlim[1]-0.1, (ylim[0]+ylim[1])/2-0.5, 'TC 1',
+            fontdict={'size': 12},
+            bbox=dict(facecolor='red', alpha=0.5))
+    ax.text(xlim[1]-0.1, 5, 'TC 2',
+            fontdict={'size': 12},
+            bbox=dict(facecolor='red', alpha=0.5))
     ax.grid(visible=True, which='both')
-    ax.set_xticklabels(['S1', 'S2', 'S3',
+    ax.set_yticklabels(['S1', 'S2', 'S3',
                         'S1', 'S2', 'S3'])
 
 
@@ -202,23 +208,28 @@ def plot_modal_values(data: pd.DataFrame):
         for mode in data_mode:
             unique, counts = np.unique(d1, return_counts=True)
             mode_counts = dict(zip(unique, counts))[mode]
-            ax.scatter(i, mode)
+            ax.plot(mode, i, 'x')
             txt = str(mode_counts)
-            ax.annotate(txt, (i+0.05, mode+0.005))
+            ax.annotate(txt, (mode+0.01, i+0.2))
         i += 1
-    ax.set_ylabel(r'T [$^\circ$C]')
-    ax.set_xticks([0, 1, 2, 3, 4, 5])
-    ax.set_xticklabels(col_names)
+
+    ax.set_xlabel(r'T [$^\circ$C]')
     ax.set_title('Modal values')
+    plt.gca().invert_yaxis()
     ylim = ax.get_ylim()
-    d = 2.5
-    ax.vlines(d, ymin=ylim[0]-10, ymax=ylim[1]+10,
+    xlim = ax.get_xlim()
+    ax.hlines((ylim[0]+ylim[1])/2, xmin=xlim[0],
+              xmax=xlim[1],
               linestyles='solid', colors='black')
-    ax.set_ylim(ylim)
-    ax.text(2, ylim[1]-0.05, 'TC 1')
-    ax.text(d+0.1, ylim[1]-0.05, 'TC 2')
+    ax.set_xlim(xlim)
+    ax.text(xlim[1]-0.1, (ylim[0]+ylim[1])/2-0.5, 'TC 1',
+            fontdict={'size': 12},
+            bbox=dict(facecolor='red', alpha=0.5))
+    ax.text(xlim[1]-0.1, 5, 'TC 2',
+            fontdict={'size': 12},
+            bbox=dict(facecolor='red', alpha=0.5))
     ax.grid(visible=True, which='both')
-    ax.set_xticklabels(['S1', 'S2', 'S3',
+    ax.set_yticklabels(['', 'S1', 'S2', 'S3',
                         'S1', 'S2', 'S3'])
 
 
