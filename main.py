@@ -26,6 +26,23 @@ def plot_data(data: pd.DataFrame):
         # good_values_sum = data[map][col_names[col]].sum()
 
 
+def plot_moving_avg(data: pd.DataFrame):
+    col_names = data.columns.to_list()
+    win_size = 500
+    data = data.rolling(win_size).mean()
+    map = data.applymap(lambda x: isinstance(x, (int, float)))
+    fig, ax = plt.subplots(len(col_names)//2, 2)
+    fig.set_figheight(15)
+    fig.set_figwidth(20)
+    for col in range(len(col_names)):
+        ax[col // 2, col % 2].plot(data[map][col_names[col]], '.')
+        ax[col // 2, col % 2].set_title(col_names[col])
+        ax[col // 2, col % 2].set_ylabel(r'T [$^\circ$C]')
+        ax[col // 2, col % 2].set_xlabel('sample')
+        # good_values_count = map.sum()[col_names[col]]
+        # good_values_sum = data[map][col_names[col]].sum()
+
+
 def clear_data(data: pd.DataFrame):
     pd.options.mode.chained_assignment = None
     data.fillna("missing", inplace=True)
@@ -152,6 +169,7 @@ def box_plot(data: pd.DataFrame):
                       linewidth=0.5)
         labels = ['S1', 'S2', 'S3']
         ax.set_yticklabels(labels)
+        plt.gca().invert_yaxis()
         # ax.set_xlim((36, 39))
         ax.set_xlabel(r'T [$^\circ$C]')
         title = 'TC' + str(col + 1)
@@ -241,13 +259,13 @@ def linreg(data: pd.DataFrame):
     dfm = data.melt('sample', var_name='cols', value_name='T [C]')
     # fig.suptitle('')
     sns.lmplot(data=dfm, x='sample', y='T [C]', hue='cols', scatter=False,
-               n_boot=10_000,
+               n_boot=10_000, order=2,
                col='cols',
                facet_kws=dict(sharex=False, sharey=False))
 
 
 # %%
-# plot_data(df)
+plot_data(df)
 print(df.info())
 df = clear_data(df)
 print(df.info())
@@ -260,3 +278,5 @@ plot_mean_std(df)
 plot_modal_values(df)
 # %%
 linreg(df)
+
+# %%
