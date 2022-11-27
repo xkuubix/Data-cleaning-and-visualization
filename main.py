@@ -24,6 +24,7 @@ def plot_data(data: pd.DataFrame):
         ax[col // 2, col % 2].set_xlabel('sample')
         # good_values_count = map.sum()[col_names[col]]
         # good_values_sum = data[map][col_names[col]].sum()
+    fig.suptitle('Data points')
 
 
 def plot_moving_avg(data: pd.DataFrame):
@@ -41,6 +42,8 @@ def plot_moving_avg(data: pd.DataFrame):
         ax[col // 2, col % 2].set_xlabel('sample')
         # good_values_count = map.sum()[col_names[col]]
         # good_values_sum = data[map][col_names[col]].sum()
+    title = 'Moving averages, window: ' + str(win_size) + ' samples'
+    fig.suptitle(title)
 
 
 def clear_data(data: pd.DataFrame):
