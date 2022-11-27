@@ -24,7 +24,6 @@ def plot_data(data: pd.DataFrame):
         ax[col // 2, col % 2].set_xlabel('sample')
         # good_values_count = map.sum()[col_names[col]]
         # good_values_sum = data[map][col_names[col]].sum()
-    fig.suptitle('Data points')
 
 
 def plot_moving_avg(data: pd.DataFrame):
@@ -42,8 +41,6 @@ def plot_moving_avg(data: pd.DataFrame):
         ax[col // 2, col % 2].set_xlabel('sample')
         # good_values_count = map.sum()[col_names[col]]
         # good_values_sum = data[map][col_names[col]].sum()
-    title = 'Moving averages, window: ' + str(win_size) + ' samples'
-    fig.suptitle(title)
 
 
 def clear_data(data: pd.DataFrame):
@@ -94,11 +91,19 @@ def plot_hist(data: pd.DataFrame):
     fig.set_figheight(15)
     fig.set_figwidth(20)
     for col in range(len(col_names)):
-        ax[col // 2, col % 2].hist(data[map][col_names[col]], bins=20)
+        ax[col // 2, col % 2].hist(data[map][col_names[col]], bins=21)
         ax[col // 2, col % 2].set_title(col_names[col])
         ax[col // 2, col % 2].set_ylabel('n_samples')
         ax[col // 2, col % 2].set_xlabel(r'T [$^\circ$C]')
-
+        d = data[map][col_names[col]]
+        ylim = ax[col // 2, col % 2].get_ylim()
+        ax[col // 2, col % 2].vlines(d.mean(), ymin=10, ymax=9990,
+                                     linestyles='dashed', linewidths=(5,),
+                                     color='red')
+        ax[col // 2, col % 2].vlines(d.median(), ymin=10, ymax=9990,
+                                     linestyles='dotted', linewidths=(5,),
+                                     color='black')
+        ax[col // 2, col % 2].set_ylim(ylim)
     columns_titles = ['S1_TC1', 'S2_TC1', 'S3_TC1',
                       'S1_TC2', 'S2_TC2', 'S3_TC2']
     d1 = data.reindex(columns=columns_titles[0:3])
@@ -251,6 +256,7 @@ def plot_modal_values(data: pd.DataFrame):
     ax.grid(visible=True, which='both')
     ax.set_yticklabels(['', 'S1', 'S2', 'S3',
                         'S1', 'S2', 'S3'])
+    ax.set_xticks([36.9, 37, 37.1, 37.2, 37.3, 37.4, 37.5, 37.6, 37.7])
 
 
 def linreg(data: pd.DataFrame):
@@ -268,18 +274,18 @@ def linreg(data: pd.DataFrame):
 
 
 # %%
-plot_data(df)
 print(df.info())
+plot_data(df)
 df = clear_data(df)
 print(df.info())
 print_data_stats(df)
 # %%
 plot_data(df)
+plot_moving_avg(df)
 plot_hist(df)
 box_plot(df)
 plot_mean_std(df)
 plot_modal_values(df)
 # %%
-linreg(df)
-
+# linreg(df)
 # %%
